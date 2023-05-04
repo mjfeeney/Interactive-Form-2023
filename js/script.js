@@ -28,9 +28,8 @@ const design_select = document.getElementById("design");
 
 colors.style.display = "none";
 
-// Program the "Design" <select> element to listen for user changes. When a change is detected:
-// The "Color" <select> element should be enabled.
-// The "Color" <select> element should display an available color.
+
+// When a change is detected in design drop down menu, the "Color" <select> element is enabled and will display an available colors.
 design_select.addEventListener("change", function() {
     let design_puns = document.querySelector("option[value='js puns']");
     let design_heart = document.querySelector("option[value='heart js']");
@@ -42,11 +41,7 @@ design_select.addEventListener("change", function() {
 
     colors.style.display = "block";  
 
-    // The "Color" dropdown menu should display only the color options associated with the selected design. For example:
-    // If the user selects "Theme - JS Puns" then the "Color" menu should only display "Cornflower Blue," "Dark Slate Grey," and "Gold."
-    // If the user selects "Theme - I ♥ JS" then the "Color" menu should only display "Tomato," "Steel Blue," and "Dim Grey."
-
-     // DOESN'T WORK IN SAFARI ************************************
+     // Only shows color options that are available depending on the Design theme chosen in the desing drop down select menu. (** Doesn't work in Safari **)
     if (design_puns.selected === true) {
         for(var i = 0; i < puns_colors.length; i++) {
            heart_colors[i].hidden = true;
@@ -62,28 +57,71 @@ design_select.addEventListener("change", function() {
     } else {
         colors.style.display = "none";
     }
-    
-
 });
-
-
 
 
 // The "Total: $" element below the "Register for Activities" section should update to reflect the sum of the cost of the user’s selected activities.
-
-// Program the "Register for Activities" fieldset element to listen for user changes. When a change is detected:
 const activities = document.getElementById("activities");
 const total_cost_p = document.getElementById("activities-cost");
-const total = 50;
+const activity_checkbox = document.querySelectorAll("#activities input[type=checkbox]");
+let total = 0;
 
-// If an activity is checked, the total cost should increase by the value in the data-cost attribute of the activity’s <input type="checkbox"> element.
 activities.addEventListener("change", function(e) {
-    let total = e.target.getAttribute("data-cost");
+    let single_cost = e.target.getAttribute("data-cost");
+
+    if(e.target.checked === true) {
+        total = parseInt(total) + parseInt(single_cost);
+    }
+    if(e.target.checked === false) {
+        total = parseInt(total) - parseInt(single_cost);
+    }
+
     total_cost_p.innerHTML = `Total: $${total}`;
+    
 });
 
-// If an activity is unchecked, the total cost should decrease by that amount.
-// The <p> element with the id of "activity-cost" below the activities section should update to reflect the chosen activities' total cost.
+
+// Variables and functions for Payment Info Sectoin
+const payment_info_select = document.getElementById("payment");
+
+const pay_with_cc = document.querySelector("option[value='credit-card']");
+const pay_with_paypal = document.querySelector("option[value='paypal']");
+const pay_with_bitcoin = document.querySelector("option[value='bitcoin']");
+
+const payment_info_cc = document.getElementById("credit-card");
+const payment_info_paypal = document.getElementById("paypal");
+const payment_info_bitcoin = document.getElementById("bitcoin");
+
+// Credit card payment option shows as selected by default when the form first loads and other payment option information is hidden
+pay_with_cc.setAttribute("selected", "");
+payment_info_paypal.style.display = "none";
+payment_info_bitcoin.style.display = "none";
+
+// Hide and show payment option information ddpending on which type is selected from the "I'm going to pay with" select menu.
+payment_info_select.addEventListener("change", function() {
+    payment_info_paypal.style.display = "none";
+    payment_info_cc.style.display = "none";
+    payment_info_bitcoin.style.display = "none";
+
+    if(pay_with_paypal.selected === true) {
+        payment_info_paypal.style.display = "inherit";
+    } if(pay_with_bitcoin.selected === true) {
+        payment_info_bitcoin.style.display = "inherit";
+    } if(pay_with_cc.selected === true) {
+        payment_info_cc.style.display = "inherit";
+    } 
+});
+
+
+// Variables and functions for Form Validation
+
+
+
+
+
+
+
+
 
 
 
