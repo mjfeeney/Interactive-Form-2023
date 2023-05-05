@@ -114,6 +114,84 @@ payment_info_select.addEventListener("change", function() {
 
 
 // Variables and functions for Form Validation
+const form = document.querySelector("form");
+const user_email = document.getElementById("email"); 
+const cc_number = document.getElementById("cc-num");
+
+form.addEventListener("submit", function(e) {
+    e.preventDefault();
+    // The "Name" field cannot be blank or empty.
+    if(user_name.value.trim()) {
+        // do nothing if true
+        console.log("valid user name");
+    } else {
+        alert("Please enter a Name, this field can not be left empty.")
+        user_name.focus();
+    }
+
+    // Validating The "Email Address" field is not blank and is valid email format.
+    // Only accounting for email addresses ending in ".com" for this project.
+    function isValidEmail(email) {
+        return /^[^@]+@[^@.]+\.com+$/i.test(email);
+    }
+
+    if (isValidEmail(user_email.value) === true) {
+        console.log("valid email");
+    } else {
+        alert("Please enter a valid email address.");
+        user_email.focus();
+    }
+
+    // The "Register for Activities" section must have at least one activity selected.
+    const checked_boxes = document.querySelectorAll("#activities input[type=checkbox]:checked");
+   
+    if(checked_boxes.length >= 1) {
+        console.log("at least 1 is checked");
+    } else {
+        alert("No activities are selected, please select at least one."); 
+    }
+    
+
+
+    // If and only if credit card is the selected payment method:
+    if(pay_with_cc.selected === true) {
+        const valid_cc_num = /^[^-][^\s]\d{11,14}$/;
+        const valid_zip = /^\d{5}$/;
+        const valid_cvv = /^\d{3}$/;
+        const zip_code = document.getElementById("zip");
+        const cvv_code = document.getElementById("cvv");
+
+        // The "Card number" field must contain a 13 - 16 digit credit card number with no dashes or spaces.
+        if(valid_cc_num.test(cc_number.value)) {
+            // do nothing if true
+            console.log("CC digits are good");
+        } else {
+            alert("Credit card number must be between 13 and 16 digits and can not contain dashes or spaces.")
+        };
+        
+        // The "Zip code" field must contain a 5 digit number.
+        if(valid_zip.test(zip_code.value)) {
+            // do nothing if true
+            console.log("zip is good");
+        } else {
+            alert("Invalid Zip Code, must contain 5 numbers only.")
+        };
+
+        // The "CVV" field must contain a 3 digit number.
+        if(valid_cvv.test(cvv_code.value)) {
+            // do nothing if true
+            console.log("cvv is good");
+        } else {
+            alert("Invalid CVV, must contain 3 numbers only.")
+        };
+    } 
+
+    
+
+
+
+});
+
 
 
 
