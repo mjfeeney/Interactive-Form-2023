@@ -50,14 +50,16 @@ let hint_cvv = cvv_code.parentElement.lastElementChild;
 // ---------------------------------------------------------- //
 
 
+// **********
+// Basic Info section
+// **********
+
 // Default to focus on name input field on page load
 user_name.focus();
 
+
 // Hide the "text field" with the id of "other-job-role"
 other_job_role.style.display = "none";
-
-// Disable the "Color" <select> element.
-colors.style.display = "none";
 
 // When a change is detected in Job Role seclect element, display/hide the "text field" for "Other job role" when "Other" is selected.
 job_role_select.addEventListener("change", function() {
@@ -70,6 +72,15 @@ job_role_select.addEventListener("change", function() {
    }
 });
 
+
+// **********
+// T-Shirt Info section
+// **********
+
+// Disable the "Color" <select> element.
+const color_select = document.getElementById("color");
+color.setAttribute('disabled', true);
+
 // When a change is detected in design drop down menu, the "Color" <select> element is enabled and will display an available colors.
 design_select.addEventListener("change", function() {
     let design_puns = document.querySelector("option[value='js puns']");
@@ -80,20 +91,20 @@ design_select.addEventListener("change", function() {
 
     let heart_colors = document.querySelectorAll("option[value='tomato'], option[value='steelblue'], option[value='dimgrey']");
 
-    colors.style.display = "block";  
+    color.removeAttribute("disabled");
 
      // Only shows color options that are available depending on the Design theme chosen in the desing drop down select menu. (** Doesn't work in Safari **)
     if (design_puns.selected === true) {
         for(var i = 0; i < puns_colors.length; i++) {
            heart_colors[i].hidden = true;
            puns_colors[i].hidden = false;
-           all_colors[0].selected = true;
+           puns_colors[0].selected = true;
         }
     } else if (design_heart.selected === true) {
         for(var i = 0; i < puns_colors.length; i++) {
             puns_colors[i].hidden = true;
             heart_colors[i].hidden = false;
-            all_colors[0].selected = true;
+            heart_colors[0].selected = true;
         }
     } else {
         colors.style.display = "none";
@@ -102,7 +113,7 @@ design_select.addEventListener("change", function() {
 
 
 // ************* 
-// Register for Activities Sectoin
+// Register for Activities section
 // ************* 
 
 // The "Total: $" element below the "Register for Activities" section should update to reflect the sum of the cost of the user’s selected activities.
@@ -111,7 +122,7 @@ activities.addEventListener("change", function(e) {
     let single_cost = e.target.getAttribute("data-cost");
     let time = e.target.getAttribute("data-day-and-time");
     let day_and_times = Array.from(document.querySelectorAll("[data-day-and-time]"));
-    let activities_checked = document.querySelectorAll("#activities input[type=checkbox]:checked");
+    
    
     if(e.target.checked === true) {
         total = parseInt(total) + parseInt(single_cost);
@@ -142,8 +153,6 @@ activities.addEventListener("change", function(e) {
 });
 
 
-
-
 // ************* 
 // Payment Info Sectoin
 // ************* 
@@ -161,9 +170,11 @@ payment_info_select.addEventListener("change", function() {
 
     if(pay_with_paypal.selected === true) {
         payment_info_paypal.style.display = "inherit";
-    } if(pay_with_bitcoin.selected === true) {
+    } 
+    if(pay_with_bitcoin.selected === true) {
         payment_info_bitcoin.style.display = "inherit";
-    } if(pay_with_cc.selected === true) {
+    } 
+    if(pay_with_cc.selected === true) {
         payment_info_cc.style.display = "inherit";
     } 
 });
@@ -236,8 +247,7 @@ function cvv_validation() {
     };
 }
 
-// Upon form submit, if a required form field or section is invalid:
-// Add the ‘.not-valid’ className to the parent element of the form field or section and display hint text
+// if a required form field or section is invalid: add the ‘.not-valid’ className to the parent element of the form field or section and display hint text
 // If valid: add '.vaild' className and hide hint text
 function validationHints(result, field, hint) {
     if(result === false) {
@@ -346,7 +356,6 @@ cvv_code.addEventListener("keyup", function() {
 // **********
 
 // For Zip Code field, provide one error message if the field fails for not having correct number of digits, and a separate message if it fails due to having characters that are not digits.
-const conditional_zip = /^[a-z]$/;
 
 // The "Zip code" field must contain a 5 digit number.
 function zip_conditional_message() {
